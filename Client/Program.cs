@@ -1,26 +1,29 @@
 ﻿using Grpc.Core;
 using System;
+using System.Net.Http;
 using static EnvoyGrpcService.HelloWorldService;
 
 namespace Client
 {
     class Program
     {
+        private static HttpClient _httpClient = new HttpClient();
+        private static HelloWorldServiceClient _client = new HelloWorldServiceClient(new Channel("127.0.0.1", 9211, ChannelCredentials.Insecure));
+
         static void Main(string[] args)
         {
-            try
-            {
-                var client = new HelloWorldServiceClient(new Channel("127.0.0.1", 9211, ChannelCredentials.Insecure));
 
-                var response = client.SayHelloWorld(new EnvoyGrpcService.HelloWorldRequest());
+            Console.WriteLine("Contacting GRPC endpoint...");
 
-                Console.WriteLine(response.Message);
+            var grpcResponse = _client.SayHelloWorld(new EnvoyGrpcService.HelloWorldRequest());
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            Console.WriteLine(grpcResponse.Message);
+
+            Console.WriteLine("Contacting REST endpoint...");
+
+            var httpResponse = _httpClient.GetAsync("http://127.0.0.1:9211").Result;
+
+            Console.WriteLine(httpResponse.Content.ReadAsStringAsync().Result);
 
             Console.WriteLine("Done. Press any key to exit...");
             Console.ReadKey();

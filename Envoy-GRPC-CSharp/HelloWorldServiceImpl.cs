@@ -12,7 +12,7 @@ namespace Envoy_GRPC_CSharp
         {
             return Task.FromResult(new HelloWorldResponse
             {
-                Message = $"Hello World From .NET Core GRPC Service! Hostname: {Environment.MachineName}"
+                Message = $"Hello World from GRPC! Hostname: {Environment.MachineName}"
             });
         }
     }
