@@ -1,0 +1,22 @@
+version: '2'
+services:
+
+  dotnetapp:
+    build:
+      context: .
+      dockerfile: Dockerfile-dotnet
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+
+  envoy:
+    build:
+      context: .
+      dockerfile: Dockerfile-envoy
+    expose:
+      - "9211"
+      - "9901"
+    ports:
+      - "9211:9211"
+      - "9901:9901"

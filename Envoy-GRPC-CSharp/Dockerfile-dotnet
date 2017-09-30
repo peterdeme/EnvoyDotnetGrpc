@@ -1,0 +1,4 @@
+FROM microsoft/dotnet:2.0-runtime
+WORKDIR /app
+COPY bin/Output .
+ENTRYPOINT ["dotnet", "Envoy-GRPC-CSharp.dll"]

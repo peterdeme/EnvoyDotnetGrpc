@@ -1,0 +1,15 @@
+syntax = "proto3";
+package EnvoyGrpcService;
+
+
+service HelloWorldService {
+	rpc SayHelloWorld(HelloWorldRequest) returns (HelloWorldResponse) {}
+}
+
+message HelloWorldRequest {
+  
+}
+
+message HelloWorldResponse {
+	string Message = 1;
+}

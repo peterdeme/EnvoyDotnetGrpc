@@ -1,0 +1,72 @@
+{
+  "listeners": [
+    {
+      "address": "tcp://0.0.0.0:9211",
+      "filters": [
+        {
+          "type": "read",
+          "name": "http_connection_manager",
+          "config": {
+            "codec_type": "auto",
+            "stat_prefix": "ingress_http",
+            "access_log": [
+              {
+                "path": "/var/log/envoy/ingress_http.log"
+              }
+            ],
+            "route_config": {
+              "virtual_hosts": [
+                {
+                  "name": "local_service",
+                  "domains": [
+                    "*"
+                  ],
+                  "routes": [
+                    {
+                      "timeout_ms": 0,
+                      "prefix": "/",
+                      "headers": [
+                        {
+                          "name": "content-type",
+                          "value": "application/grpc"
+                        }
+                      ],
+                      "cluster": "local_dotnet_app"
+                    }
+                  ]
+                }
+              ]
+            },
+            "filters": [
+              {
+                "type": "decoder",
+                "name": "router",
+                "config": {}
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "admin": {
+    "access_log_path": "/var/log/envoy/admin_access.log",
+    "address": "tcp://0.0.0.0:9901"
+  },
+  "cluster_manager": {
+    "clusters": [
+      {
+        "name": "local_dotnet_app",
+        "connect_timeout_ms": 250,
+        "type": "strict_dns",
+        "lb_type": "round_robin",
+        "features": "http2",
+        "hosts": [
+          {
+            "url": "tcp://dotnetapp:5000"
+          }
+        ]
+      }
+    ]
+  }
+}

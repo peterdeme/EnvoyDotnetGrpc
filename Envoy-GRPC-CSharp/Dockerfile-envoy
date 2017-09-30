@@ -1,0 +1,5 @@
+FROM lyft/envoy:latest
+
+RUN mkdir /var/log/envoy
+COPY config/envoy-conf.json /etc/envoy-conf.json
+CMD /usr/local/bin/envoy -c /etc/envoy-conf.json
