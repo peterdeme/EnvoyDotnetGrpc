@@ -2,6 +2,6 @@ dotnet publish ..\Envoy-GRPC-CSharp.csproj --output bin\Output
 
 Push-Location ..
 
-docker-compose up --build
+docker-compose up -d --build
 
 Pop-Location
